@@ -1,4 +1,4 @@
-package com.viiyue.validator.spring.boot.samples;
+package com.viiyue.validator.spring.boot.samples.bean;
 
 import com.viiyue.plugins.validator.annotation.Label;
 import com.viiyue.plugins.validator.constraints.Rules;

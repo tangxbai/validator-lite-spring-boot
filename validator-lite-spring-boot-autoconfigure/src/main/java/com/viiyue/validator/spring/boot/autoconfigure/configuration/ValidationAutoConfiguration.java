@@ -22,6 +22,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import com.viiyue.plugins.validator.ValidatorFactory;
 import com.viiyue.plugins.validator.spring.ValidatorLite;
 import com.viiyue.plugins.validator.spring.beans.ValidationRequestMappingHandlerAdapter;
 import com.viiyue.plugins.validator.spring.message.SpringMessageResovler;
@@ -43,9 +44,29 @@ public class ValidationAutoConfiguration implements WebMvcRegistrations, WebMvcC
 	public ValidationAutoConfiguration( 
 		ValidatorProperties validatorProperties, 
 		ObjectProvider<MessageSource> messageSourceProvider ) {
+		
+		// Preparing the operating environment
 		com.viiyue.plugins.validator.Validator.prepare();
-		setMessageResolver( messageSourceProvider.getIfAvailable() );
+		
+		// Initialize a custom data validation factory implementation class
+		// Not initialized if factory class is null
+		com.viiyue.plugins.validator.Validator.initFactory( validatorProperties.getFactoryInstance() );
+		
+		// Change preference configuration
 		com.viiyue.plugins.validator.Validator.configuration( validatorProperties );
+		
+		// Validator message resolver
+		setMessageResolver( messageSourceProvider.getIfAvailable() );
+		
+		// Registering custom handlers
+		ValidatorFactory factory = com.viiyue.plugins.validator.Validator.getFactory();
+		for ( String handlerClassName : validatorProperties.getHandlerClassNames() ) {
+			factory.addHandler( handlerClassName );
+		};
+		
+		// Call the initialized function
+		factory.afterInitialized();
+		
 	}
 	
 	@Override
