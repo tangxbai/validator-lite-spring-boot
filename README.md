@@ -1,5 +1,5 @@
 # Validator-lite-spring-boot
-![version](https://img.shields.io/badge/release-1.3.0-blue) [![maven central](https://img.shields.io/badge/maven%20central-1.3.0-brightgreen)](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis) [![license](https://img.shields.io/badge/license-Apache%202.0-blue)](http://www.apache.org/licenses/LICENSE-2.0.html)
+![version](https://img.shields.io/badge/release-1.0.0-blue) [![maven central](https://img.shields.io/badge/maven%20central-1.0.0-brightgreen)](https://maven-badges.herokuapp.com/maven-central/org.mybatis/mybatis) [![license](https://img.shields.io/badge/license-Apache%202.0-blue)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Validator-lite关于springboot的整合组件，在springboot开发环境中，你只需要在maven中配置插件库的引用，在springboot插件自动装配机制的帮助下，可以帮我们省去一部分默认配置，即使不做任何配置也可以使用插件的相关功能。
 
