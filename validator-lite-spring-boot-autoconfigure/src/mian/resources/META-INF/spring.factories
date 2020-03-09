@@ -1,0 +1,7 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidationAutoConfiguration
+
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidatorStartedListener

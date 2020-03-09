@@ -1,0 +1,31 @@
+{
+    "properties": [
+        {
+            "name": "validator.setting.enable-strict-mode",
+            "type": "java.lang.Boolean",
+            "description": "Whether to enable strict mode, the default is loose mode.",
+            "sourceType": "com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidatorProperties",
+            "defaultValue": true
+        },
+        {
+            "name": "validator.setting.enable-single-mode",
+            "type": "java.lang.Boolean",
+            "description": "Whether to enable single verification mode. If it is enabled, all illegal parameters will not be verified. The default mode is loose mode.",
+            "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties",
+            "defaultValue": false
+        },
+        {
+            "name": "validator.setting.enable-warning-log",
+            "type": "java.lang.Boolean",
+            "description": "Whether to enable warning log printing. It is enabled by default.",
+            "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties",
+            "defaultValue": true
+        },
+        {
+            "name": "validator.setting.default-language",
+            "type": "java.lang.String",
+            "description": "Set the default locale to use, the current system locale is used by default.",
+            "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties"
+        }
+    ]
+}

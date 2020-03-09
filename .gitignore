@@ -1,0 +1,16 @@
+# maven #
+target/
+
+# idea #
+.idea/
+*.iml
+
+# eclipse #
+.settings/
+.classpath
+.project
+.factorypath
+
+# log #
+*.log
+log/
