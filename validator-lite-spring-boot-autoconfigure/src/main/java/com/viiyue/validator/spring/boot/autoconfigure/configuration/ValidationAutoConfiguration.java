@@ -77,7 +77,7 @@ public class ValidationAutoConfiguration implements WebMvcRegistrations, WebMvcC
 		ValidatorFactory factory = com.viiyue.plugins.validator.Validator.getFactory();
 		for ( String handlerClassName : validatorProperties.getHandlerClassNames() ) {
 			factory.addHandler( handlerClassName );
-		};
+		}
 		
 		// Call the initialized function
 		factory.afterInitialized();
