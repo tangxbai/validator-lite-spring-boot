@@ -26,6 +26,18 @@
             "type": "java.lang.String",
             "description": "Set the default locale to use, the current system locale is used by default.",
             "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties"
+        },
+        {
+            "name": "validator.setting.handlers",
+            "type": "java.lang.String",
+            "description": "Register custom validation handler, the parameter is the full class path of the package, and multiple ones can be separated by (,; \t\n).",
+            "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties"
+        },
+        {
+            "name": "validator.setting.factory",
+            "type": "java.lang.Class",
+            "description": "Custom validation factory implementation",
+            "sourceType": "com.viiyue.plugins.mybatis.spring.boot.autoconfigure.MybatisMapperProperties"
         }
     ]
 }

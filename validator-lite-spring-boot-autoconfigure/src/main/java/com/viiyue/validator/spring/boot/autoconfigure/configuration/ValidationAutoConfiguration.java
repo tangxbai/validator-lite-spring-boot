@@ -68,7 +68,7 @@ public class ValidationAutoConfiguration implements WebMvcRegistrations, WebMvcC
 		com.viiyue.plugins.validator.Validator.initFactory( validatorProperties.getFactoryInstance() );
 		
 		// Change preference configuration
-		com.viiyue.plugins.validator.Validator.configuration( validatorProperties );
+		com.viiyue.plugins.validator.Validator.configuration( validatorProperties, false );
 		
 		// Validator message resolver
 		setMessageResolver( messageSourceProvider.getIfAvailable() );
@@ -81,7 +81,6 @@ public class ValidationAutoConfiguration implements WebMvcRegistrations, WebMvcC
 		
 		// Call the initialized function
 		factory.afterInitialized();
-		
 	}
 	
 	@Override
