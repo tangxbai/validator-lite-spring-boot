@@ -10,6 +10,7 @@ target/
 .classpath
 .project
 .factorypath
+.apt_generated
 
 # log #
 *.log
