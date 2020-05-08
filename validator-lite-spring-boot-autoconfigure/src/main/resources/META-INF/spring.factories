@@ -1,5 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.viiyue.validator.spring.boot.autoconfigure.configuration.RemoveDefaultValidationBeanAutoConfiguration,\
 com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidationAutoConfiguration
 
 # Application Listeners
