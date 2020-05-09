@@ -30,8 +30,8 @@ public class Controller {
 	@Validated
 	@GetMapping( "/test" )
 	public void test( 
-		@Rules( "required; not-blank; username; test(12345, 333)<<测试1>>; test2(12345, 333)<<测试2>>" ) String username, 
-		@Rules( "required; not-blank; password('strict')" ) String password ) {
+		@Rules( "required; not-blank; username; test(12345, 333)<<测试1>>; test2(12345, 333)<<测试2>>" ) String username,
+		@Rules( "required; not-blank; password('strong')" ) String password ) {
 		System.out.println( "Controller.test -> " + username );
 	}
 
