@@ -18,19 +18,25 @@ package com.viiyue.validator.spring.boot.autoconfigure.support;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.aop.framework.ReflectiveMethodInvocation;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.SmartFactoryBean;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 
+import com.viiyue.plugins.validator.common.Constants;
+import com.viiyue.plugins.validator.metadata.result.ElementResult;
+import com.viiyue.plugins.validator.metadata.result.FragmentResult;
 import com.viiyue.plugins.validator.metadata.result.ValidatedResult;
 import com.viiyue.plugins.validator.spring.bindings.ParameterBindingResult;
 import com.viiyue.plugins.validator.spring.exception.ValidatedException;
@@ -44,7 +50,6 @@ import com.viiyue.plugins.validator.spring.utils.LocaleUtils;
  */
 public class MethodValidationInterceptor implements MethodInterceptor {
 
-	private static final String DEFAULT_OBJECT_NAME = "params";
 	private final ParameterNameDiscoverer parameterNameDiscoverer;
 
 	public MethodValidationInterceptor( ParameterNameDiscoverer parameterNameDiscoverer ) {
@@ -54,15 +59,17 @@ public class MethodValidationInterceptor implements MethodInterceptor {
 	@Override
 	public Object invoke( MethodInvocation invocation ) throws Throwable {
 		Method method = invocation.getMethod();
+		Parameter [] parameters = method.getParameters();
 
 		// Avoid Validator invocation on FactoryBean.getObjectType/isSingleton
-		if ( isFactoryBeanMetadataMethod( method ) ) {
+		if ( isFactoryBeanMetadataMethod( method ) || ArrayUtils.isEmpty( parameters ) ) {
 			return invocation.proceed();
 		}
-		Class<?> beanType = invocation.getThis().getClass();
-		Parameter [] parameters = method.getParameters();
+		
+		String methodName = method.getName();
 		Object [] arguments = invocation.getArguments();
 		String [] parameterNames = parameterNameDiscoverer.getParameterNames( method );
+		Class<?> beanType = invocation.getThis().getClass();
 		Class<?>[] groups = determineValidationGroups( method, beanType );
 
 		// The validator supports internationalized message display,
@@ -73,7 +80,7 @@ public class MethodValidationInterceptor implements MethodInterceptor {
 		int paramLength = parameters.length;
 		ValidatedResult validatedResult = null;
 		Map<String, Object> target = new HashMap<String, Object>( paramLength );
-		ParameterBindingResult bindingResult = new ParameterBindingResult( target, DEFAULT_OBJECT_NAME );
+		ParameterBindingResult bindingResult = new ParameterBindingResult( target, methodName );
 		for ( int i = 0; i < paramLength; i ++ ) {
 			Parameter parameter = parameters[ i ];
 			String parameterName = parameterNames[ i ];
@@ -86,11 +93,20 @@ public class MethodValidationInterceptor implements MethodInterceptor {
 				validatedResult.merge( result );
 			}
 			bindingResult.putParameter( parameterName, arguments[ i ], parameter.getType() );
+			// Append each validation result to BindingResult
+			if ( !result.isPassed() ) {
+				ElementResult rejectedResult = validatedResult.getLastRejectedResult();
+				for ( FragmentResult fr : ( List<FragmentResult> ) rejectedResult.getResult() ) { // Updated in v1.0.3
+					String basicMessageCode = Constants.DEFAULT_MESSAGE_KEY_PREFIX + "." + fr.getFragment();
+					String [] errorCodes = bindingResult.resolveMessageCodes( basicMessageCode, parameterName );
+					bindingResult.addError( new FieldError( methodName, parameterName, arguments[ i ], false, errorCodes, fr.getArguments(), fr.getErrorMessage() ) );
+				}
+			}
 		}
 		bindingResult.setValidated( validatedResult );
-
+		
 		// Inject validation results or throw exceptions
-		if ( ValidatedResult.class.isAssignableFrom( arguments[ paramLength - 1 ].getClass() ) ) {
+		if ( ValidatedResult.class.isAssignableFrom( parameters[ paramLength - 1 ].getType() ) ) {
 			arguments[ paramLength - 1 ] = validatedResult;
 			if ( invocation instanceof ReflectiveMethodInvocation ) {
 				( ( ReflectiveMethodInvocation ) invocation ).setArguments( arguments );
