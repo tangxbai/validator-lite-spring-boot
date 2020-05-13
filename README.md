@@ -27,7 +27,7 @@ Validator-lite关于springboot的整合组件，在springboot开发环境中，�
 </dependency>
 ```
 
-如何获取最新版本？[点击这里获取最新版本](https://search.maven.org/search?q=g:com.viiyue.plugins%20AND%20a:validator-lite-spring-boot-starter&core=gav)
+如何获取最新版本？[点击这里获取最新版本](https://search.maven.org/search?q=a:validator-lite-spring-boot)
 
 
 
@@ -46,6 +46,12 @@ validator.setting.enable-single-mode = false
 
 # 是否打印警告日志，插件会提示一些不影响运行的日志，但是可以纠正的信息，默认开启。
 validator.setting.enable-warning-log = true
+
+# 自定义验证器包扫描（验证器需继承Handler/BaseHandler）
+validator.setting.handlers = com.a.b.c
+
+# 自定义验证工厂实现（需要实现ValidatorFactory接口）
+validator.setting.factory = com.a.b.c.ValidatorFactoryProvider
 ```
 
 以上各配置项的样例值均为默认值，如果想要更改默认值的话，请帖上您的条例配置，如果您想继续使用这些默认值的话，可以省略这些配置直接使用。
