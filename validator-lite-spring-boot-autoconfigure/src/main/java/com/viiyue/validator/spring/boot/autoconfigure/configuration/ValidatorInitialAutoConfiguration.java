@@ -31,7 +31,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.DelegatingMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -66,7 +65,6 @@ public class ValidatorInitialAutoConfiguration implements InitializingBean, WebM
 	}
 	
 	@Bean
-	@Primary
 	@Override
 	public Validator getValidator() {
 		return new ValidatorLite();

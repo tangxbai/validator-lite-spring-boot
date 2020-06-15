@@ -2,6 +2,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidatorInitialAutoConfiguration,\
 com.viiyue.validator.spring.boot.autoconfigure.configuration.RedefineRequestMappingHandlerAdapterAutoConfiguration,\
+com.viiyue.validator.spring.boot.autoconfigure.configuration.RemoveDefaultValidatorAutoConfiguration,\
 com.viiyue.validator.spring.boot.autoconfigure.configuration.ValidationAutoConfiguration
 
 # Application Listeners
