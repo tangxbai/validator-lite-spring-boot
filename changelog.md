@@ -1,3 +1,7 @@
+#### v1.2.2（2024/01/02）
+1. 修复开发环境下项目启动找不到 `ValidatorFactory` 的问题；
+3. 优化一些小问题；
+
 #### v1.2.1（2020/06/15）
 1. 去除`ValidatorLite`自动装配时指定的primary配置；
 2. 增加自动装配类`RemoveDefaultValidatorAutoConfiguration`，用于移除spring默认载入的校验器；

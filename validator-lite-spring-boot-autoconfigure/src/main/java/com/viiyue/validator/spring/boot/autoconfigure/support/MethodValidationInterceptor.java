@@ -79,7 +79,7 @@ public class MethodValidationInterceptor implements MethodInterceptor {
 		// Perform single parameter validation
 		int paramLength = parameters.length;
 		ValidatedResult validatedResult = null;
-		Map<String, Object> target = new HashMap<String, Object>( paramLength );
+		Map<String, Object> target = new HashMap<>( paramLength );
 		ParameterBindingResult bindingResult = new ParameterBindingResult( target, methodName );
 		for ( int i = 0; i < paramLength; i ++ ) {
 			Parameter parameter = parameters[ i ];

@@ -43,44 +43,38 @@ import com.viiyue.validator.spring.boot.autoconfigure.support.VariantRequestMapp
  * After {@code 1.1.0}, the method interceptor is used for parameter
  * verification, so it is necessary to remove some of the Beans that come with
  * the framework for verification to prevent logical conflicts.
- * 
+ *
  * @author tangxbai
  * @since 1.2.0
  */
 @Configuration
 @ConditionalOnWebApplication( type = Type.SERVLET )
-@AutoConfigureAfter({ EnableWebMvcConfiguration.class })
+@AutoConfigureAfter( { EnableWebMvcConfiguration.class } )
 @ConditionalOnClass( { Servlet.class, DispatcherServlet.class, ValidatorLite.class } )
 public class RedefineRequestMappingHandlerAdapterAutoConfiguration implements ApplicationContextAware {
 
-	private final Stream<String> stream;
-	
-	public RedefineRequestMappingHandlerAdapterAutoConfiguration() {
-		Class<?> pocessor = MethodValidationPostProcessor.class;
-		Class<?> validatorBean = LocalValidatorFactoryBean.class;
-		Class<?> adapter = RequestMappingHandlerAdapter.class;
-		this.stream = Stream.of( 
-			adapter.getName(), 
-			StringUtils.uncapitalize( adapter.getSimpleName() ),
-			pocessor.getName(), 
-			StringUtils.uncapitalize( pocessor.getSimpleName() ),
-			validatorBean.getName(),
-			StringUtils.uncapitalize( validatorBean.getSimpleName() ) 
-		);
-	}
-	
-	@Override
-	public void setApplicationContext( ApplicationContext applicationContext ) throws BeansException {
-		DefaultListableBeanFactory beanFactory = ( DefaultListableBeanFactory ) applicationContext.getAutowireCapableBeanFactory();
-		RequestMappingHandlerAdapter handlerAdapter = beanFactory.getBean( RequestMappingHandlerAdapter.class );
-		stream.forEach( name -> {
-			if ( beanFactory.containsBeanDefinition( name ) ) {
-				beanFactory.removeBeanDefinition( name );
-			}
-		});
-		BeanDefinitionBuilder definition = BeanDefinitionBuilder.rootBeanDefinition( VariantRequestMappingHandlerAdapter.class );
-		definition.addPropertyValue( "handlerAdapter", handlerAdapter );
-		beanFactory.registerBeanDefinition( "requestMappingHandlerAdapter", definition.getBeanDefinition() );
-	}
+    // Updated at 2024/01/02( 1.2.1 )
+    private final Stream<String> stream = Stream.of(
+            "requestMappingHandlerAdapter",
+            "org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter",
+            "methodValidationPostProcessor",
+            "com.viiyue.validator.spring.boot.autoconfigure.support.MethodValidationPostProcessor",
+            "localValidatorFactoryBean",
+            "org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+    );
+
+    @Override
+    public void setApplicationContext( ApplicationContext applicationContext ) throws BeansException {
+        DefaultListableBeanFactory beanFactory = ( DefaultListableBeanFactory ) applicationContext.getAutowireCapableBeanFactory();
+        RequestMappingHandlerAdapter handlerAdapter = beanFactory.getBean( RequestMappingHandlerAdapter.class );
+        stream.forEach( name -> {
+            if ( beanFactory.containsBeanDefinition( name ) ) {
+                beanFactory.removeBeanDefinition( name );
+            }
+        } );
+        BeanDefinitionBuilder definition = BeanDefinitionBuilder.rootBeanDefinition( VariantRequestMappingHandlerAdapter.class );
+        definition.addPropertyValue( "handlerAdapter", handlerAdapter );
+        beanFactory.registerBeanDefinition( "requestMappingHandlerAdapter", definition.getBeanDefinition() );
+    }
 
 }
